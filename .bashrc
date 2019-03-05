@@ -71,6 +71,9 @@ source "$HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh"
 alias tmux="TERM=screen-256color-bce tmux"
 export TERM=xterm-256color
 
+# Set editor as vim
+export EDITOR=nvim
+
 # Setting PATH for Python 3.7
 # The original version is saved in .bash_profile.pysave
 PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin:${PATH}"
