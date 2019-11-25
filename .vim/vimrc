@@ -73,7 +73,7 @@ Plugin 'michaeljsmith/vim-indent-object'
 
 " Change textwidth in python code depending on whether line is source code or a
 " comment
-Plugin 'jimf/vim-pep8-text-width'
+" Plugin 'jimf/vim-pep8-text-width'
 
 " Airline status bar
 Plugin 'vim-airline/vim-airline'
@@ -85,6 +85,9 @@ Plugin 'ctrlpvim/ctrlp.vim'
 
 " Syntax checking
 Plugin 'scrooloose/syntastic'
+
+" LaTeX Plugin
+Plugin 'lervag/vimtex'
 
 call vundle#end()
 " }}}
@@ -177,7 +180,7 @@ set cursorline
 set display=lastline
 
 " Custom format options (see [fo-table])
-autocmd FileType * setlocal formatoptions=cqnljt
+autocmd FileType * setlocal formatoptions=cqnlj
 
 " Default maximum line length
 set textwidth=79
@@ -192,6 +195,14 @@ set noequalalways
 if has('nvim')
     autocmd TermOpen * set nonumber norelativenumber nocursorline
 endif
+
+set noeol
+
+" Prevent screen redrawing while performing a macro
+set lazyredraw
+
+" Persistent undo between Vim sessions
+set undofile
 " }}}
 
 " Custom Highlights:
@@ -200,6 +211,8 @@ hi CursorLine ctermbg=234 guibg=#1d2021
 hi CursorLineNr ctermbg=234 guibg=#1d2021
 hi CursorColumn ctermbg=234 guibg=#1d2021
 " hi NERDTreeDir ctermfg=214, guifg=#fabd2f
+
+hi Normal ctermbg=black guibg=#151515
 " }}}
 
 " Custom Mappings:
@@ -208,10 +221,10 @@ hi CursorColumn ctermbg=234 guibg=#1d2021
 let mapleader=" "
 
 " Shortcut for global substitute
-nnoremap <leader>s :%s/
+" nnoremap <leader>s :%s/
 
 " Substitute on last visual selection
-nnoremap <leader>vs :'<,'>s/
+nnoremap gs :'<,'>s/
 
 " Fix repeat last substitute command to keep flags
 nnoremap & :&&<CR>
@@ -256,6 +269,18 @@ nnoremap <C-n> :NERDTreeToggle<CR>
 
 " Vim Fugitive Mappings
 nnoremap <C-g> :Gstatus<CR>
+
+" Save current buffer
+nnoremap <leader>w :w<CR>
+
+" Quick refactor
+nnoremap <leader>* :%s/\<<C-R><C-W>\>//g<left><left>
+
+" Redo last macro
+nnoremap Q @@
+
+" Autocorrect previous spelling error with most likely correction.
+nnoremap <leader>s [sz=1<CR><CR>
 " }}}
 
 " Custom Commands:
@@ -278,17 +303,39 @@ nnoremap <silent> <leader>or :set relativenumber!<CR>
 
 " Colorcolumn (highlight textwidth column)
 nnoremap <silent> <leader>oc :let &cc = &cc == '' ? '+0' : ''<CR>
+
+" Toggle Automatic Syntastic Syntax Checking
+nnoremap <leader>os :SyntasticToggleMode<CR>
 " }}}
 
 " File Specific Settings:
 " {{{
+" Assembly Settings
 " Custom settings for assembly files
-autocmd BufRead,BufNewFile *.s
-    \ setlocal filetype=arm sw=8 ts=8 sts=8 noexpandtab " arm=armv6/7
+" autocmd BufRead,BufNewFile *.s
+"     \ setlocal filetype=arm sw=8 ts=8 sts=8 noexpandtab " arm=armv6/7
+augroup asm
+    autocmd!
+    au BufRead,BufNewFile *.s setlocal filetype=mips sw=8 ts=8 sts=8 noexpandtab syntax=mips
+augroup end
 
-" Ensure markdown syntax highlighting activates properly with capitalised
-" extension
-autocmd BufRead,BufNewFile *.MD setlocal syntax=markdown
+" Markdown Settings
+augroup md
+    autocmd!
+    au BufNewFile,BufRead *.md,*.MD setlocal syntax=markdown
+    au BufNewFile,BufRead *.md,*.MD setlocal foldmethod=marker
+    au BufNewFile,BufRead *.md,*.MD setlocal spell
+    au BufNewFile,BufRead *.md,*.MD setlocal textwidth=100
+    au BufNewFile,BufRead *.md,*.MD vmap <buffer> <leader>b S*gvS*
+    au BufNewFile,BufRead *.md,*.MD vmap <buffer> <leader>i S_
+    au BufNewFile,BufRead *.md,*.MD vmap <buffer> <leader>e S_gvS*
+augroup end
+
+" vimrc settings
+augroup vimrc
+    autocmd!
+    au BufNewFile,BufRead vimrc setlocal foldmethod=marker
+augroup end
 
 " Indent folding for .py files
 " autocmd FileType python setlocal foldmethod=indent foldnestmax=1
@@ -296,9 +343,6 @@ autocmd BufRead,BufNewFile *.MD setlocal syntax=markdown
 " if search('^class') > 0
 "     autocmd FileType python setlocal foldnestmax=2
 " endif
-
-" Marker folding for vimrc
-autocmd BufRead,BufNewFile vimrc setlocal foldmethod=marker
 " }}}
 
 " Plugin Settings:
@@ -344,10 +388,12 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 " syntastic
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_auto_jump = 1
+" let g:syntastic_auto_jump = 1
 let g:syntastic_python_checkers=['flake8']
+
+let g:syntasic_mode_map = { "mode": "passive" }
 
 "SimpylFold
 let g:SimpylFold_fold_import = 0
