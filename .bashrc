@@ -74,12 +74,9 @@ export TERM=xterm-256color
 # Set editor as vim
 export EDITOR=nvim
 
-# Setting PATH for Python 3.7
-# The original version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin:${PATH}"
-export PATH
+# Add python3.8 directory to path
+export PATH="/usr/local/opt/python@3.8/bin:$PATH"
 
-# export VIRTUALENVWRAPPER_PYTHON=/Library/Frameworks/Python.framework/Versions/3.7/bin/python3
-# export PROJECT_HOME=$HOME/.virtualenvprojects
-# source /Library/Frameworks/Python.framework/Versions/3.7/bin/virtualenvwrapper.sh
-# export PKG_CONFIG_PATH=/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig/
+# Environment variable to /usr/bin/Cellar
+export CELLAR='/usr/bin/Cellar'
+

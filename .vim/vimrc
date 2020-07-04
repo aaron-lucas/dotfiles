@@ -21,6 +21,15 @@ Plugin 'VundleVim/Vundle.vim'
 " Gruvbox colorscheme
 Plugin 'morhetz/gruvbox'
 
+" Nord colorscheme
+Plugin 'arcticicestudio/nord-vim'
+
+" Papercolors colorscheme
+Plugin 'NLKNguyen/papercolor-theme'
+
+" Focuspoint colorscheme
+Plugin 'chase/focuspoint-vim'
+
 " Linting plugin
 " Plugin 'w0rp/ale'
 
@@ -60,7 +69,7 @@ Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plugin 'vim-python/python-syntax'
 
 " Python syntax folding
-Plugin 'tmhedberg/SimpylFold'
+" Plugin 'tmhedberg/SimpylFold'
 
 " Better Python Syntax
 " Plugin 'hdima/python-syntax'
@@ -88,6 +97,9 @@ Plugin 'scrooloose/syntastic'
 
 " LaTeX Plugin
 Plugin 'lervag/vimtex'
+
+" Vimwiki Plugin for Notetaking
+Plugin 'vimwiki/vimwiki'
 
 call vundle#end()
 " }}}
@@ -219,6 +231,7 @@ hi Normal ctermbg=black guibg=#151515
 " {{{
 " Set custom <leader> modifier key
 let mapleader=" "
+let maplocalleader=" "
 
 " Shortcut for global substitute
 " nnoremap <leader>s :%s/
@@ -337,6 +350,13 @@ augroup vimrc
     au BufNewFile,BufRead vimrc setlocal foldmethod=marker
 augroup end
 
+" LaTeX settings
+augroup tex
+    autocmd!
+    au BufNewFile,BufRead *.tex setlocal filetype=tex
+    au BufNewFile,BufRead *.tex setlocal spell
+augroup end
+
 " Indent folding for .py files
 " autocmd FileType python setlocal foldmethod=indent foldnestmax=1
 
@@ -394,6 +414,10 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_python_checkers=['flake8']
 
 let g:syntasic_mode_map = { "mode": "passive" }
+
+" C++11 support
+let g:syntastic_cpp_compiler = 'clang++'
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 
 "SimpylFold
 let g:SimpylFold_fold_import = 0
