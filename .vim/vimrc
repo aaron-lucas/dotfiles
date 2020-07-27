@@ -195,7 +195,7 @@ set display=lastline
 autocmd FileType * setlocal formatoptions=cqnlj
 
 " Default maximum line length
-set textwidth=79
+set textwidth=80
 
 " Don't show mode twice
 set noshowmode
@@ -215,6 +215,10 @@ set lazyredraw
 
 " Persistent undo between Vim sessions
 set undofile
+
+" Allow loading of external vimrc files
+set exrc
+set secure
 " }}}
 
 " Custom Highlights:
@@ -287,13 +291,17 @@ nnoremap <C-g> :Gstatus<CR>
 nnoremap <leader>w :w<CR>
 
 " Quick refactor
-nnoremap <leader>* :%s/\<<C-R><C-W>\>//g<left><left>
+nnoremap <leader>* :%s/\<<C-R><C-W>\>/
 
 " Redo last macro
 nnoremap Q @@
 
 " Autocorrect previous spelling error with most likely correction.
 nnoremap <leader>s [sz=1<CR><CR>
+
+" Faster paste from unnamed register
+inoremap <C-r><C-r> <C-r>"
+
 " }}}
 
 " Custom Commands:
