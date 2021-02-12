@@ -108,6 +108,9 @@ call vundle#end()
 " {{{
 filetype plugin indent on
 
+" Normal backspace behaviour
+set backspace=indent,eol,start
+
 " Enable syntax highlighting
 syntax on
 
@@ -204,9 +207,9 @@ set noshowmode
 set noequalalways
 
 " Turn off line numbers and highlighting for NeoVim terminals
-if has('nvim')
-    autocmd TermOpen * set nonumber norelativenumber nocursorline
-endif
+" if has('nvim')
+"     autocmd TermOpen * set nonumber norelativenumber nocursorline
+" endif
 
 set noeol
 
@@ -219,6 +222,16 @@ set undofile
 " Allow loading of external vimrc files
 set exrc
 set secure
+
+" Block cursor in normal mode, bar cursor in insert mode, underscore cursor in
+" replace mode
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+" Vimwiki only acts in the vimwiki directory
+let g:vimwiki_global_ext = 0
+let g:vimwiki_ext2syntax = {}
 " }}}
 
 " Custom Highlights:
@@ -302,6 +315,10 @@ nnoremap <leader>s [sz=1<CR><CR>
 " Faster paste from unnamed register
 inoremap <C-r><C-r> <C-r>"
 
+" Compile and flash AVR program
+nnoremap <F5> :!make install<CR>
+nnoremap <F10> :!make test<CR>
+
 " }}}
 
 " Custom Commands:
@@ -337,7 +354,7 @@ nnoremap <leader>os :SyntasticToggleMode<CR>
 "     \ setlocal filetype=arm sw=8 ts=8 sts=8 noexpandtab " arm=armv6/7
 augroup asm
     autocmd!
-    au BufRead,BufNewFile *.s setlocal filetype=mips sw=8 ts=8 sts=8 noexpandtab syntax=mips
+    au BufRead,BufNewFile *.s setlocal filetype=avr sw=8 ts=8 sts=8 noexpandtab syntax=avr
 augroup end
 
 " Markdown Settings
@@ -430,4 +447,7 @@ let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 "SimpylFold
 let g:SimpylFold_fold_import = 0
 let g:SimpylFold_fold_docstring = 0
+
+"Vimtex
+let g:tex_flavor='latex'
 " }}}
