@@ -12,23 +12,8 @@ call vundle#begin()
 " Let vundle manage itself
 Plugin 'VundleVim/Vundle.vim'
 
-" Lots of colorschemes
-" Plugin 'flazz/vim-colorschemes'
-
-" Jedi autocompletion for Python
-" Plugin 'davidhalter/jedi-vim'
-
 " Gruvbox colorscheme
 Plugin 'morhetz/gruvbox'
-
-" Nord colorscheme
-Plugin 'arcticicestudio/nord-vim'
-
-" Papercolors colorscheme
-Plugin 'NLKNguyen/papercolor-theme'
-
-" Focuspoint colorscheme
-Plugin 'chase/focuspoint-vim'
 
 " Linting plugin
 " Plugin 'w0rp/ale'
@@ -59,7 +44,7 @@ Plugin 'tpope/vim-markdown'
 " Plugin 'gabrielelana/vim-markdown'
 
 " Project Navigator
-Plugin 'scrooloose/nerdtree'
+Plugin 'preservim/nerdtree'
 
 " NERDTree colors and custom icons
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -93,7 +78,7 @@ Plugin 'mkitt/tabline.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 
 " Syntax checking
-Plugin 'scrooloose/syntastic'
+Plugin 'vim-syntastic/syntastic'
 
 " LaTeX Plugin
 Plugin 'lervag/vimtex'
@@ -423,6 +408,9 @@ let g:NERDTreeHighlightFoldersFullName = 1
 let g:airline_powerline_fonts = 1
 let g:airline_section_c = '%t'
 
+let g:airline_section_x = '%{airline#util#wrap(airline#parts#filetype(),0)}'
+let g:airline_section_z = '%p%% %#__accent_bold#%{g:airline_symbols.linenr} %l/%L:%v%#__restore__#'
+
 let g:airline#extensions#capslock#enabled = 1
 
 let g:airline#extensions#syntastic#enabled = 1
@@ -432,13 +420,12 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 
 " syntastic
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 " let g:syntastic_auto_jump = 1
-let g:syntastic_python_checkers=['flake8']
+let g:syntastic_python_checkers=['pylint']
 
-let g:syntasic_mode_map = { "mode": "passive" }
+" let g:syntasic_mode_map = { "mode": "passive" }
 
 " C++11 support
 let g:syntastic_cpp_compiler = 'clang++'
