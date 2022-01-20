@@ -2,91 +2,101 @@
 " Author: Aaron Lucas
 "
 set nocompatible
-
-" Vundle:
-" {{{
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
 
-" Let vundle manage itself
-Plugin 'VundleVim/Vundle.vim'
+" Plugins:
+" {{{
+
+call plug#begin('~/.vim/plugged')
+
+" Colorscheme Plugins:
+" --------------------
 
 " Gruvbox colorscheme
-Plugin 'morhetz/gruvbox'
+Plug 'morhetz/gruvbox'
 
-" Linting plugin
-" Plugin 'w0rp/ale'
+" Language Plugins:
+" ----------------------------
 
-" Replacement for grep: Ack
-Plugin 'mileszs/ack.vim'
+" Markdown
+Plug 'tpope/vim-markdown'
+" Plug 'gabrielelana/vim-markdown'
 
-" Surround.vim
-Plugin 'tpope/vim-surround'
-
-" Git plugin
-Plugin 'tpope/vim-fugitive'
-
-" Pairs of handy bracket mappings
-Plugin 'tpope/vim-unimpaired'
-
-" Allow . command to be used with plugin maps
-Plugin 'tpope/vim-repeat'
-
-" Easy commenting/uncommenting
-Plugin 'tpope/vim-commentary'
-
-" Better Caps Lock
-Plugin 'tpope/vim-capslock'
-
-" Markdown Syntax
-Plugin 'tpope/vim-markdown'
-" Plugin 'gabrielelana/vim-markdown'
-
-" Project Navigator
-Plugin 'preservim/nerdtree'
-
-" NERDTree colors and custom icons
-Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
-" Plugin 'ryanoasis/vim-devicons'
-
-" Updated Python syntax highlighting
-Plugin 'vim-python/python-syntax'
+" Python
+Plug 'vim-python/python-syntax'
 
 " Python syntax folding
-" Plugin 'tmhedberg/SimpylFold'
+" Plug 'tmhedberg/SimpylFold'
 
 " Better Python Syntax
-" Plugin 'hdima/python-syntax'
+" Plug 'hdima/python-syntax'
 
-" CSV Plugin
-Plugin 'mechatroner/rainbow_csv'
+" Nix
+Plug 'LnL7/vim-nix'
+
+" CSV
+Plug 'mechatroner/rainbow_csv'
+
+" LaTeX
+Plug 'lervag/vimtex'
+
+" Tim Popes Amazing Plugins:
+" ---------------------------
+
+" Surround.vim
+Plug 'tpope/vim-surround'
+
+" Git plugin
+Plug 'tpope/vim-fugitive'
+
+" Pairs of handy bracket mappings
+Plug 'tpope/vim-unimpaired'
+
+" Allow . command to be used with plugin maps
+Plug 'tpope/vim-repeat'
+
+" Easy commenting/uncommenting
+Plug 'tpope/vim-commentary'
+
+" Better Caps Lock
+Plug 'tpope/vim-capslock'
+
+" Nerdtree:
+" ---------
+
+" Project Navigator
+Plug 'preservim/nerdtree'
+
+" NERDTree colors and custom icons
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" Plug 'ryanoasis/vim-devicons'
+
+" Airline:
+" --------
+
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'mkitt/tabline.vim'
+
+" Other Plugins:
+" --------------
+
+" Replacement for grep: Ack
+Plug 'mileszs/ack.vim'
 
 " Allow easy selection of indented blocks
-Plugin 'michaeljsmith/vim-indent-object'
-
-" Change textwidth in python code depending on whether line is source code or a
-" comment
-" Plugin 'jimf/vim-pep8-text-width'
-
-" Airline status bar
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'mkitt/tabline.vim'
+Plug 'michaeljsmith/vim-indent-object'
 
 " Fuzzy finder
-Plugin 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 
 " Syntax checking
-Plugin 'vim-syntastic/syntastic'
-
-" LaTeX Plugin
-Plugin 'lervag/vimtex'
+Plug 'vim-syntastic/syntastic'
 
 " Vimwiki Plugin for Notetaking
-Plugin 'vimwiki/vimwiki'
+Plug 'vimwiki/vimwiki'
 
-call vundle#end()
+call plug#end()
 " }}}
 
 " Custom Settings:
@@ -121,7 +131,11 @@ set mouse=a
 set shortmess=I
 
 " Style settings
+let g:gruvbox_italic='1'
+let g:gruvbox_contrast_dark='hard'
+set termguicolors
 colorscheme gruvbox
+
 set background=dark
 
 " Remove delay when pressing escape (at least when exiting visual mode)
@@ -139,7 +153,7 @@ set nrformats-=octal
 " Show all possible options when using autocomplete in command mode
 set wildmenu
 
-" Tab-related settings
+" Tabs & Spacing
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
@@ -147,6 +161,9 @@ set smarttab
 set shiftround
 set expandtab
 set autoindent
+
+set list
+set listchars=tab:▶\ ,trail:·
 
 " Buffer settings
 set hidden
@@ -226,7 +243,9 @@ hi CursorLineNr ctermbg=234 guibg=#1d2021
 hi CursorColumn ctermbg=234 guibg=#1d2021
 " hi NERDTreeDir ctermfg=214, guifg=#fabd2f
 
-hi Normal ctermbg=black guibg=#151515
+" Gruvbox default background color is #282828 but this is too light
+" Make it darker...
+" hi Normal ctermbg=black guibg=#151515
 " }}}
 
 " Custom Mappings:
@@ -303,6 +322,10 @@ inoremap <C-r><C-r> <C-r>"
 " Compile and flash AVR program
 nnoremap <F5> :!make install<CR>
 nnoremap <F10> :!make test<CR>
+
+" Re-select after indent
+vnoremap < <gv
+vnoremap > >gv
 
 " }}}
 
@@ -437,4 +460,8 @@ let g:SimpylFold_fold_docstring = 0
 
 "Vimtex
 let g:tex_flavor='latex'
+
+"Ctrlp
+let g:ctrlp_extensions = ['mixed']
+
 " }}}
