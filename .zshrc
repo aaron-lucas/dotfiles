@@ -80,12 +80,11 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='nvim'
-# fi
-export EDITOR=vim
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -98,12 +97,15 @@ export EDITOR=vim
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias vim="nvim"
 
 # Set gruvbox theme
 ZSH_THEME="gruvbox"
 SOLARIZED_THEME="dark"
 
-export PATH="/usr/local/opt/python@3.9/bin:$PATH"
+source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
+
+export PATH="$PATH:/opt/gradle/gradle-5.4.1/bin"
 
 eval $(thefuck --alias)
 
@@ -113,3 +115,16 @@ export PATH=$PATH:$HOME/.os161-toolchain/bin
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+
+if [ -e /Users/aaron/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/aaron/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+# Colored ls output
+# PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+eval $( /usr/local/opt/coreutils/libexec/gnubin/dircolors -b $HOME/.dircolors )
+
+# Java environment variables
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+export PATH=$JAVA_HOME/bin:$PATH
+
+export PATH="/usr/local/opt/python@3.10/bin:$PATH"
