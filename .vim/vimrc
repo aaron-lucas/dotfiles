@@ -390,6 +390,11 @@ augroup tex
     au BufNewFile,BufRead *.tex setlocal spell
 augroup end
 
+augroup c
+    autocmd!
+    au FileType c setlocal commentstring=//\ %s
+augroup end
+
 " Indent folding for .py files
 " autocmd FileType python setlocal foldmethod=indent foldnestmax=1
 
@@ -463,5 +468,6 @@ let g:tex_flavor='latex'
 
 "Ctrlp
 let g:ctrlp_extensions = ['mixed']
+
 
 " }}}
