@@ -72,6 +72,8 @@ This bare repo contains configurations for the following:
 * Import One Dark colorscheme (`~/.config/iterm2/One Dark.itermcolors`) in
   Profiles -> Colors settings
 
+* Select newly installed Nerd Font in Profiles -> Text
+
 ## References
 
 * [Hacker News](https://news.ycombinator.com/item?id=11070797)
