@@ -41,17 +41,17 @@ This bare repo contains configurations for the following:
 
 ### Neovim
 
+* Install Neovim and C/C++ LSP for coc.nvim
+
+        # E.g. with Homebrew
+        brew install neovim ccls node
+
 * Install [Vim Plug](https://github.com/junegunn/vim-plug)
 
         sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
         # Install plugins in neovim with :PlugInstall
-
-* Install `ccls` as C/C++ LSP for coc.nvim
-
-        # E.g. with Homebrew
-        brew install ccls
 
 ### ZSH
 
