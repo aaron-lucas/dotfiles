@@ -87,8 +87,8 @@ let g:NERDTreeQuitOnOpen = 1
 
 " Colorscheme & Highlighting {{{
 
-" hi! link TSVariable Normal
-" hi! link TSOperator Operator
+hi! link TSVariable Normal
+hi! link TSOperator Operator
 
 " }}}
 
@@ -130,7 +130,8 @@ set cursorline
 set signcolumn=number
 
 " Maximum Line Length
-set textwidth=80
+set textwidth=100
+set formatoptions-=t
 
 " Persistent Edit History
 set undofile
@@ -237,62 +238,83 @@ nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 nnoremap <leader>fr <cmd>Telescope registers<cr>
 
+nnoremap <leader>fs <cmd>Telescope coc workspace_symbols<cr>
+
 " }}}
 
 " COC Mappings {{{
 
-inoremap <silent> <expr> <tab> pumvisible() ?
-        \ "\<C-n>" :
-        \ CheckBackspace() ?
-            \ "\<tab>" :
-            \ coc#refresh()
-inoremap <expr> <S-tab> pumvisible() ? "\<C-p>" : "\<C-h>"
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: There's always complete item selected by default, you may want to enable
+" no select by `"suggest.noselect": true` in your configuration file.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice.
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 function! CheckBackspace() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1] =~# '\s'
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" CTRL-Space triggers completion
+" Use <c-space> to trigger completion.
 if has('nvim')
-    inoremap <silent> <expr> <C-space> coc#refresh()
+  inoremap <silent><expr> <c-space> coc#refresh()
 else
-    inoremap <silent> <expr> <C-@> coc#refresh()
+  inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
-" Enter selects the first completion
-inoremap <silent> <expr> <cr> pumvisible() ?
-    \ coc#_select_confirm() :
-    \ "\<C-g>u\<cr>\<C-r>=coc#on_enter()\<cr>"
-
-" Navigate diagnostics
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 nmap <silent> <leader>g <Cmd>CocDiagnostics<cr>
 
-" Go To xxx
+" GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-nnoremap <silent> K :call ShowDocumentation()<cr>
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call ShowDocumentation()<CR>
 
 function! ShowDocumentation()
-    if CocAction('hasProvider', 'hover')
-        call CocActionAsync('doHover')
-    else
-        call feedkeys('K', 'in')
-    endif
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
 endfunction
 
-" Highlight symbol under cursor and its references
+" Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-" Refactor symbol
+" Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
-nmap <F2> <Plug>(coc-rename)
 
-" Text objects
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
 xmap if <Plug>(coc-funcobj-i)
 omap if <Plug>(coc-funcobj-i)
 xmap af <Plug>(coc-funcobj-a)
@@ -312,7 +334,6 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
   vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
 
-" }}}
 
 " Commands {{{
 
@@ -320,6 +341,15 @@ endif
 command Init source ~/.config/nvim/init.vim
 
 " View all active highlights
-command HiTest source /usr/local/Cellar/neovim/0.7.2_1/share/nvim/runtime/syntax/hitest.vim
+command HiTest source ${VIMRUNTIME}/syntax/hitest.vim
+
+command Strip %s/\s\+$//
+
+function! SynStack()
+    if !exists("*synstack")
+        return
+    endif
+    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
 
 "}}}

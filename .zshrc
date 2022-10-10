@@ -94,3 +94,4 @@ eval $(thefuck --alias)
 # PATH modifications
 export PATH="/usr/local/opt/python@3.10/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
+eval "$(direnv hook zsh)"
